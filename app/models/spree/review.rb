@@ -33,4 +33,8 @@ class Spree::Review < ActiveRecord::Base
   def recalculate_product_rating
     product.recalculate_rating if product.present?
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["approved", "created_at", "id", "id_value", "ip_address", "locale", "location", "name", "product_id", "rating", "review", "show_identifier", "title", "updated_at", "user_id"]
+  end
 end

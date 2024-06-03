@@ -9,7 +9,7 @@ module Spree
           before_action :load_review, only: [:update, :destroy]
 
           def index
-            render_serialized_payload {serialize_collection(paginated_collection)}
+            render_serialized_payload { serialize_collection(paginated_collection) }
           end
 
           def show
@@ -23,7 +23,7 @@ module Spree
 
             @review = Spree::Review.new(review_params)
             @review.product = @product
-            @review.user = spree_current_user if spree_user_signed_in?
+            @review.user = spree_current_user
             @review.ip_address = request.remote_ip
             @review.locale = I18n.locale.to_s if Spree::Reviews::Config[:track_locale]
 
@@ -85,7 +85,7 @@ module Spree
           end
 
           def collection
-            return Spree::Review.approved.where(product: @product) if @product
+            return Spree::Review.fetch_reviews(spree_current_user).where(product: @product) if @product
 
             # for security reason only return current user's product questions
             Spree::Review.where(user_id: spree_current_user) if params[:user_id]

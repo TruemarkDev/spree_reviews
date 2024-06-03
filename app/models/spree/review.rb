@@ -43,6 +43,16 @@ class Spree::Review < ActiveRecord::Base
     end
   end
 
+  def self.filter_reviews(reviews, params)
+    if params[:filter] == 'pending'
+      reviews.not_approved
+    elsif params[:filter] == 'approved'
+      reviews.approved
+    else
+      reviews
+    end
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     ["approved", "created_at", "id", "id_value", "ip_address", "locale", "location", "name", "product_id", "rating", "review", "show_identifier", "title", "updated_at", "user_id"]
   end

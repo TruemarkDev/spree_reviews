@@ -84,8 +84,12 @@ module Spree
             collection_paginator.new(collection, params).call
           end
 
+          def reviews
+            scope.fetch_reviews(spree_current_user)
+          end
+
           def collection
-            return Spree::Review.fetch_reviews(spree_current_user).where(product: @product) if @product
+            return Spree::Review.filter_reviews(reviews, params).where(product: @product) if @product
 
             # for security reason only return current user's product questions
             Spree::Review.where(user_id: spree_current_user) if params[:user_id]

@@ -8,6 +8,7 @@ module Spree
 
         has_one :user
         has_one :product
+        has_many :feedback_reviews
       end
     end
   end

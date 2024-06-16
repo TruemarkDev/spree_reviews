@@ -196,4 +196,19 @@ RSpec.describe Spree::Review, type: :model do
       expect(review.feedback_stars).to be(2)
     end
   end
+
+  describe '.fetch_reviews' do
+    let!(:user) { create(:user) }
+    let!(:unapproved_review) { create(:review, user_id: user.id) }
+    let!(:approved_review) { create(:review, approved: true) }
+
+    it 'returns only approved reviews for unauthorized user' do
+      expect(described_class.fetch_reviews).to include(approved_review)
+      expect(described_class.fetch_reviews).not_to include(unapproved_review)
+    end
+
+    it 'returns approved as well as pending reviews by self for authorized user' do
+      expect(described_class.fetch_reviews(user)).to include(approved_review, unapproved_review)
+    end
+  end
 end

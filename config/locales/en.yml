@@ -47,6 +47,7 @@ en:
         review_management: Reviews
     review_successfully_submitted: Review was successfully submitted
     spree_reviews:
+      config_name: 'Spree Reviews'
       feedback_rating: Rate feedback
       include_unapproved: Include unapproved reviews in listings
       manage_review_settings: Control the display of reviews

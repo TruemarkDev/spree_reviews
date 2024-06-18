@@ -7,7 +7,6 @@ module Spree
         attributes :title, :review, :rating, :name, :show_identifier, :approved, :created_at
 
         has_many :images, serializer: :review_image
-
         has_one :user
         has_one :product
       end

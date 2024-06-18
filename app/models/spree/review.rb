@@ -16,8 +16,9 @@ class Spree::Review < ActiveRecord::Base
     less_than_or_equal_to: 5,
     message: :you_must_enter_value_for_rating
   }
-  
+
   validates_associated :images
+  
   default_scope { order('spree_reviews.created_at DESC') }
 
   scope :localized, ->(lc) { where('spree_reviews.locale = ?', lc) }

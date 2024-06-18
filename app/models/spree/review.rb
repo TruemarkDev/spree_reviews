@@ -2,6 +2,9 @@ class Spree::Review < ActiveRecord::Base
   belongs_to :product, touch: true
   belongs_to :user, class_name: Spree.user_class.to_s, optional: true
   has_many   :feedback_reviews
+  has_many :images, as: :viewable, dependent: :destroy, class_name: 'Spree::ReviewImage'
+
+  accepts_nested_attributes_for :images
 
   after_save :recalculate_product_rating, if: :approved?
   after_destroy :recalculate_product_rating
@@ -14,6 +17,8 @@ class Spree::Review < ActiveRecord::Base
     message: :you_must_enter_value_for_rating
   }
 
+  validates_associated :images
+  
   default_scope { order('spree_reviews.created_at DESC') }
 
   scope :localized, ->(lc) { where('spree_reviews.locale = ?', lc) }
@@ -54,6 +59,6 @@ class Spree::Review < ActiveRecord::Base
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    ["approved", "created_at", "id", "id_value", "ip_address", "locale", "location", "name", "product_id", "rating", "review", "show_identifier", "title", "updated_at", "user_id"]
+    ["approved", "created_at", "id", "id_value", "ip_address", "locale", "location", "name", "product_id", "rating", "review", "show_identifier", "title", "updated_at", "user_id", 'images']
   end
 end

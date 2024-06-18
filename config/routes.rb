@@ -22,6 +22,10 @@ Spree::Core::Engine.add_routes do
           resources :reviews, only: [:index, :create, :update, :destroy]
         end
 
+        resources :reviews, only: [] do
+          resources :feedback_reviews, only: [:index, :create, :show, :update, :destroy]
+        end
+
         namespace :account do
           resources :reviews, controller: :user_reviews, only: %i[index]
         end

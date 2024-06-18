@@ -11,7 +11,7 @@ module SpreeReviews
                       with_match_path('/reviews').
                       build,
                     Spree::Admin::MainMenu::ItemBuilder.new('spree_reviews.review_settings', edit_admin_review_settings_path).
-                      with_availability_check(->(ability, _store) { ability.can?(:manage, ::Spree::ProductQuestionSetting) }).
+                      with_availability_check(->(ability, _store) { ability.can?(:manage, ::Spree::ReviewSetting) }).
                       with_match_path('/review_settings').
                       build
                   ]

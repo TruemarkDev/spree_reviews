@@ -26,7 +26,6 @@ module Spree
             @review.user = spree_current_user
             @review.ip_address = request.remote_ip
             @review.locale = I18n.locale.to_s if Spree::Reviews::Config[:track_locale]
-
             # TODO: @prakash fix permission
             # authorize! :create, @review
 
@@ -36,12 +35,10 @@ module Spree
           def update
             params[:review][:rating].sub!(/\s*[^0-9]*\z/, '') unless params[:review][:rating].blank?
 
-            # TODO: fix permission
-            # authorixe! :update, @review
             @review.ip_address = request.remote_ip
             @review.locale = I18n.locale.to_s if Spree::Reviews::Config[:track_locale]
-            if @review.update(review_params)
 
+            if @review.user == spree_current_user && @review.update(review_params)
               render_serialized_payload {serialize_resource(@review)}
             else
               render_error_payload(product_question.errors)
@@ -49,9 +46,7 @@ module Spree
           end
 
           def destroy
-            # TODO: fix permission
-            # authorize! :destroy, @review
-            if @review.destroy
+            if @review.user == spree_current_user && @review.destroy
               render_serialized_payload { serialize_resource(@review) }
             else
               render_error_payload('Something went wrong')
@@ -84,8 +79,12 @@ module Spree
             collection_paginator.new(collection, params).call
           end
 
+          def reviews
+            scope.fetch_reviews(spree_current_user)
+          end
+
           def collection
-            return Spree::Review.fetch_reviews(spree_current_user).where(product: @product) if @product
+            return Spree::Review.filter_reviews(reviews, params).where(product: @product) if @product
 
             # for security reason only return current user's product questions
             Spree::Review.where(user_id: spree_current_user) if params[:user_id]
@@ -100,7 +99,7 @@ module Spree
           end
 
           def permitted_review_attributes
-            [:rating, :title, :review, :name, :show_identifier]
+            [:rating, :title, :review, :name, :show_identifier, images_attributes: [:attachment]]
           end
 
           def review_params

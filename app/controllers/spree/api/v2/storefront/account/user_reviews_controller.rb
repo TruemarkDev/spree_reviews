@@ -8,25 +8,25 @@ module Spree
 
             # GET /api/v2/storefront/account/reviews
             def index
-              render_serialized_payload { serialize_collection(resource) }
+              render_serialized_payload { serialize_collection(paginated_collection) }
             end
 
             private
 
             def resource
-              resource_finder.user_reviews(spree_current_user.id).most_recent_first
+              resource_finder.filter_reviews(reviews, params).most_recent_first
+            end
+
+            def reviews
+              resource_finder.user_reviews(spree_current_user.id)
             end
 
             def collection_serializer
               Spree::V2::Storefront::ReviewSerializer
             end
 
-            def serialize_collection(collection)
-              collection_serializer.new(
-                collection,
-                include: resource_includes,
-                fields: sparse_fields
-              ).serializable_hash
+            def paginated_collection
+              collection_paginator.new(resource, params).call
             end
 
             def resource_finder

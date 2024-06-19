@@ -47,6 +47,8 @@ That's all!
 
 ### Reviews V2
 
+- GET `/api/v2/storefront/account/reviews` - returns list of reviews associated with the current user
+
 - GET `/api/v2/storefront/products/:product_id/reviews` - returns list of reviews for a product
 
 - POST `/api/v2/storefront/products/:product_id/reviews` - creates new review for a product
@@ -79,6 +81,33 @@ That's all!
     ```
 - DELETE `/api/v2/storefront/products/:product_id/reviews/:id`
 
+### Feedback Reviews V2
+
+- GET `/api/v2/storefront/reviews/:review_id/feedback_reviews` - returns list of feedback reviews for a review
+
+- POST `/api/v2/storefront/reviews/:review_id/feedback_reviews` - creates new feedback review for a review
+
+    payload:
+    ```json
+    {
+        "feedback_review": {
+            "rating": "4",
+            "comment": "Feedback Review"
+        }
+    }
+    ```
+- PATCH/PUT `/api/v2/storefront/reviews/:review_id/feedback_reviews/:id` - Update feedback review for product
+
+    payload:
+    ```json
+    {
+        "feedback_review": {
+            "rating": "4",
+            "comment": "Feedback Review"
+        }
+    }
+    ```
+- DELETE `/api/v2/storefront/reviews/:review_id/feedback_reviews/:id`
 
 ---
 

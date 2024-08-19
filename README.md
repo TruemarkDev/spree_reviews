@@ -9,7 +9,7 @@ Straightforward review/rating functionality.
 
 ## Installation
 
-#### Spree >= 3.1
+#### Spree >= 4.0
 
 ```ruby
 gem 'spree_reviews', github: 'spree-contrib/spree_reviews'
@@ -41,6 +41,73 @@ Now you should be able to boot up your server with:
     bundle exec rails s
 
 That's all!
+
+---
+## API Endpoints
+
+### Reviews V2
+
+- GET `/api/v2/storefront/account/reviews` - returns list of reviews associated with the current user
+
+- GET `/api/v2/storefront/products/:product_id/reviews` - returns list of reviews for a product
+
+- POST `/api/v2/storefront/products/:product_id/reviews` - creates new review for a product
+
+    payload:
+    ```json
+    {
+        "review": {
+            "rating": "4",
+            "title": "Really Good",
+            "review": "I really like the product. It was as expected",
+            "name": "user1",
+            "show_identifier": false
+        }
+    }
+    ```
+- PATCH `/api/v2/storefront/products/:product_id/reviews/:id` - Update review for product
+
+    payload:
+    ```json
+    {
+        "review": {
+            "rating": "4",
+            "title": "Really Good",
+            "review": "I really like the product. It was as expected",
+            "name": "user1",
+            "show_identifier": false
+        }
+    }
+    ```
+- DELETE `/api/v2/storefront/products/:product_id/reviews/:id`
+
+### Feedback Reviews V2
+
+- GET `/api/v2/storefront/reviews/:review_id/feedback_reviews` - returns list of feedback reviews for a review
+
+- POST `/api/v2/storefront/reviews/:review_id/feedback_reviews` - creates new feedback review for a review
+
+    payload:
+    ```json
+    {
+        "feedback_review": {
+            "rating": "4",
+            "comment": "Feedback Review"
+        }
+    }
+    ```
+- PATCH/PUT `/api/v2/storefront/reviews/:review_id/feedback_reviews/:id` - Update feedback review for product
+
+    payload:
+    ```json
+    {
+        "feedback_review": {
+            "rating": "4",
+            "comment": "Feedback Review"
+        }
+    }
+    ```
+- DELETE `/api/v2/storefront/reviews/:review_id/feedback_reviews/:id`
 
 ---
 

@@ -4,7 +4,7 @@ module Spree
       module Storefront
         class FeedbackReviewsController < ::Spree::Api::V2::ResourceController
           before_action :load_review, only: :create
-          before_action :require_spree_current_user if Spree::Reviews::Config[:require_login]
+          before_action :require_spree_current_user
 
           def create
             if @review.present?
